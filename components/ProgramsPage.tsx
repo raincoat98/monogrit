@@ -2,6 +2,9 @@
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { A11y } from 'swiper/modules'
+import 'swiper/css'
 import {
   programs,
   countries,
@@ -51,7 +54,7 @@ function CountryTab({
 function ProgramCard({ p }: { p: ProgramItem }) {
   const style = typeStyle[p.type]
   return (
-    <div className="bg-white border border-gray-200 rounded-2xl p-6 flex flex-col gap-4 hover:-translate-y-1 hover:shadow-brand-card hover:border-brand transition-all duration-300 relative overflow-hidden">
+    <div className="bg-white border border-gray-200 rounded-2xl p-5 md:p-6 flex flex-col gap-4 hover:-translate-y-1 hover:shadow-brand-card hover:border-brand transition-all duration-300 relative overflow-hidden h-full min-h-[440px]">
       {p.featured && (
         <span className="absolute top-4 right-4 bg-brand text-white text-[10px] font-bold px-2.5 py-1 rounded-full">
           ★ 추천
@@ -85,8 +88,8 @@ function ProgramCard({ p }: { p: ProgramItem }) {
           { icon: '👤', label: '대상', value: p.target },
         ].map((m) => (
           <div key={m.label} className="text-center">
-            <p className="text-[10px] text-gray-400 font-medium mb-0.5">{m.icon} {m.label}</p>
-            <p className="text-[11px] text-gray-700 font-semibold leading-tight">{m.value}</p>
+            <p className="text-[11px] text-gray-400 font-medium mb-0.5">{m.icon} {m.label}</p>
+            <p className="text-[12px] text-gray-700 font-semibold leading-tight">{m.value}</p>
           </div>
         ))}
       </div>
@@ -135,6 +138,7 @@ function EmptyState({ onReset }: { onReset: () => void }) {
 export default function ProgramsPage() {
   const [activeCountry, setActiveCountry] = useState('전체')
   const [activeType, setActiveType] = useState<ProgramType | '전체'>('전체')
+  const [countryOpen, setCountryOpen] = useState(true)
 
   const countPerCountry = useMemo(() => {
     const map: Record<string, number> = { 전체: programs.length }
@@ -191,31 +195,44 @@ export default function ProgramsPage() {
       <div className="sticky top-[68px] z-30 bg-white border-b border-gray-200 shadow-sm">
         {/* Country Tabs */}
         <div className="px-5 md:px-[60px] pt-4 pb-3">
-          <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-3">
+          <button
+            onClick={() => setCountryOpen((v) => !v)}
+            className="flex items-center gap-1.5 text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-3 cursor-pointer bg-transparent border-none p-0 hover:text-brand transition-colors"
+          >
             국가 선택
-          </p>
-          <div className="flex gap-2.5 overflow-x-auto pb-1 scrollbar-hide">
-            {countries.map((c) => (
-              <CountryTab
-                key={c.name}
-                flag={c.flag}
-                name={c.name}
-                active={activeCountry === c.name}
-                count={countPerCountry[c.name] ?? 0}
-                onClick={() => setActiveCountry(c.name)}
-              />
-            ))}
-          </div>
+            <span className={`transition-transform duration-200 ${countryOpen ? 'rotate-180' : ''}`}>
+              ▾
+            </span>
+            {activeCountry !== '전체' && (
+              <span className="ml-1 px-2 py-0.5 rounded-full bg-brand text-white text-[10px] font-bold normal-case tracking-normal">
+                {countries.find((c) => c.name === activeCountry)?.flag} {activeCountry}
+              </span>
+            )}
+          </button>
+          {countryOpen && (
+            <div className="flex gap-2.5 overflow-x-auto pb-1 scrollbar-hide">
+              {countries.map((c) => (
+                <CountryTab
+                  key={c.name}
+                  flag={c.flag}
+                  name={c.name}
+                  active={activeCountry === c.name}
+                  count={countPerCountry[c.name] ?? 0}
+                  onClick={() => setActiveCountry(c.name)}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Type Filter Chips */}
         <div className="px-5 md:px-[60px] pb-4 border-t border-gray-100 pt-3">
-          <div className="flex gap-2 flex-wrap">
+          <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-0.5">
             {programTypes.map((t) => (
               <button
                 key={t.value}
                 onClick={() => setActiveType(t.value)}
-                className={`px-4 py-2 rounded-full text-[12px] font-bold border transition-all cursor-pointer ${
+                className={`flex-shrink-0 px-4 py-2 rounded-full text-[12px] font-bold border transition-all cursor-pointer ${
                   activeType === t.value
                     ? 'bg-brand text-white border-brand'
                     : 'bg-white text-gray-500 border-gray-200 hover:border-brand hover:text-brand'
@@ -229,7 +246,7 @@ export default function ProgramsPage() {
       </div>
 
       {/* ── Results ── */}
-      <div className="bg-gray-50 min-h-[60vh] px-5 md:px-[60px] py-10">
+      <div className="bg-gray-50 min-h-[60vh] px-4 md:px-[60px] py-8 md:py-10 overflow-visible">
         {/* Count + active filters */}
         <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
           <div className="flex items-center gap-2 flex-wrap">
@@ -274,14 +291,38 @@ export default function ProgramsPage() {
           )}
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-          {filtered.length > 0 ? (
-            filtered.map((p) => <ProgramCard key={p.id} p={p} />)
-          ) : (
+        {/* Cards */}
+        {filtered.length > 0 ? (
+          <>
+            {/* Mobile: cards effect swiper */}
+            <div className="block md:hidden pb-6">
+              <Swiper
+                key={filtered.map((p) => p.id).join('-')}
+                modules={[A11y]}
+                slidesPerView={1.12}
+                spaceBetween={14}
+                grabCursor
+                centeredSlides
+                className="!overflow-visible swiper-padded"
+                a11y={{ prevSlideMessage: '이전 프로그램', nextSlideMessage: '다음 프로그램' }}
+              >
+                {filtered.map((p) => (
+                  <SwiperSlide key={p.id} className="!h-auto">
+                    <ProgramCard p={p} />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+            {/* Desktop: grid */}
+            <div className="hidden md:grid md:grid-cols-2 xl:grid-cols-3 gap-5">
+              {filtered.map((p) => <ProgramCard key={p.id} p={p} />)}
+            </div>
+          </>
+        ) : (
+          <div className="grid grid-cols-1">
             <EmptyState onReset={reset} />
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
       {/* ── Bottom CTA ── */}

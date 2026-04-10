@@ -52,10 +52,10 @@ const programs = [
 
 export default function ProgramsSwiper() {
   return (
-    <div className="mt-14">
+    <div className="mt-14 pt-3">
       <Swiper
         modules={[Autoplay, Pagination, A11y]}
-        className="swiper-padded !pb-12"
+        className="swiper-padded !pb-12 !overflow-visible"
         spaceBetween={16}
         slidesPerView={1.15}
         breakpoints={{
@@ -75,22 +75,22 @@ export default function ProgramsSwiper() {
         {programs.map((p) => (
           <SwiperSlide key={p.title} className="h-auto">
             <div
-              className={`relative h-full overflow-hidden rounded-2xl p-8 border-[1.5px] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-brand-card ${
+              className={`relative h-full overflow-hidden rounded-2xl p-5 md:p-8 border-[1.5px] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-brand-card ${
                 p.featured
                   ? 'border-brand bg-gradient-to-br from-white via-white to-brand-light'
                   : 'border-gray-200 bg-white hover:border-brand'
               }`}
             >
               {p.featured && (
-                <span className="absolute top-4 right-4 bg-brand text-white text-[11px] font-bold px-3 py-1 rounded-full">
+                <span className="absolute top-3 right-3 md:top-4 md:right-4 bg-brand text-white text-[10px] md:text-[11px] font-bold px-2.5 md:px-3 py-1 rounded-full">
                   🔥 인기
                 </span>
               )}
-              <div className="text-4xl mb-4">{p.icon}</div>
-              <h3 className="font-jakarta text-[18px] font-bold text-gray-800 mb-2.5">
+              <div className="text-3xl md:text-4xl mb-3 md:mb-4">{p.icon}</div>
+              <h3 className="font-jakarta text-[16px] md:text-[18px] font-bold text-gray-800 mb-2">
                 {p.title}
               </h3>
-              <p className="text-[13px] leading-[1.8] text-gray-500 mb-4">{p.desc}</p>
+              <p className="text-[13px] leading-[1.75] text-gray-500 mb-4">{p.desc}</p>
               <div className="flex flex-wrap gap-1.5">
                 {p.tags.map((tag) => (
                   <span
