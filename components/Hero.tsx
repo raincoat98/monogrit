@@ -11,12 +11,22 @@ export default function Hero() {
   return (
     <section
       className="relative min-h-[92vh] flex items-center px-5 md:px-[60px] py-24 md:py-[100px] overflow-hidden hero-dots"
-      style={{ background: 'linear-gradient(135deg, #0f2b6b 0%, #1a56db 55%, #3b82f6 100%)' }}
+      style={{ background: '#0f2b6b' }}
     >
-      {/* Glow */}
+      {/* Background Video */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover"
+        src="/video/hero-bg.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+      />
+
+      {/* Gradient Overlay */}
       <div
-        className="absolute w-[600px] h-[600px] -top-24 -right-24 rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%)' }}
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: 'linear-gradient(135deg, rgba(15,43,107,0.82) 0%, rgba(26,86,219,0.72) 55%, rgba(59,130,246,0.60) 100%)' }}
       />
 
       {/* Content */}
