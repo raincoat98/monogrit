@@ -246,7 +246,7 @@ export default function ProgramsPage() {
       </div>
 
       {/* ── Results ── */}
-      <div className="bg-gray-50 min-h-[60vh] px-4 md:px-[60px] py-8 md:py-10 overflow-visible">
+      <div className="bg-gray-50 min-h-[60vh] px-4 md:px-[60px] py-8 md:py-10">
         {/* Count + active filters */}
         <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
           <div className="flex items-center gap-2 flex-wrap">
@@ -295,7 +295,7 @@ export default function ProgramsPage() {
         {filtered.length > 0 ? (
           <>
             {/* Mobile: cards effect swiper */}
-            <div className="block md:hidden pb-6">
+            <div className="block md:hidden pb-6 -mx-4 overflow-hidden">
               <Swiper
                 key={filtered.map((p) => p.id).join('-')}
                 modules={[A11y]}
