@@ -302,8 +302,7 @@ export default function ProgramsPage() {
                 slidesPerView={1.12}
                 spaceBetween={14}
                 grabCursor
-                centeredSlides
-                className="!overflow-visible swiper-padded"
+                className="swiper-padded"
                 a11y={{ prevSlideMessage: '이전 프로그램', nextSlideMessage: '다음 프로그램' }}
               >
                 {filtered.map((p) => (
