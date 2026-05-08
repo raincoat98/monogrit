@@ -10,7 +10,7 @@ export default function MobileTabBar() {
 
   return (
     <>
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-[900] bg-white border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-[900] bg-white border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
         <div className="grid grid-cols-3 h-[60px]">
           <a
             href="tel:15991234"

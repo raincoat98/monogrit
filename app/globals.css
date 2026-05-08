@@ -79,7 +79,15 @@ details > summary::-webkit-details-marker { display: none; }
 /* ── Mobile tabbar safe area ── */
 @media (max-width: 768px) {
   .page-bottom-pad {
-    padding-bottom: 60px;
+    padding-bottom: calc(60px + env(safe-area-inset-bottom));
+  }
+  .footer-bottom-pad {
+    padding-bottom: calc(92px + env(safe-area-inset-bottom));
+  }
+}
+@media (min-width: 769px) {
+  .footer-bottom-pad {
+    padding-bottom: 2rem;
   }
 }
 

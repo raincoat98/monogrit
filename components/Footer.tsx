@@ -15,7 +15,7 @@ const contactItems = [
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-800 px-5 md:px-[60px] pt-16 pb-8">
+    <footer className="bg-gray-800 px-5 md:px-[60px] pt-16 footer-bottom-pad">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr] gap-11 border-b border-white/8 pb-11 mb-7">
         {/* Brand */}
         <div>
